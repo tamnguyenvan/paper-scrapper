@@ -1,4 +1,5 @@
 import json
+import csv
 import time
 import hashlib
 from selenium import webdriver
@@ -89,9 +90,11 @@ def main():
             break
 
     # Save scapped data
-    save_path = 'papers.json'
+    save_path = 'papers.csv'
     with open(save_path, 'w') as f:
-        json.dump(papers, f)
+        writer = csv.writer(f, quotechar='"')
+        for _, paper_info in papers.items():
+            writer.writerow([paper_info['title'], paper_info['link'], paper_info['reference']])
 
     print(f'Saved results as {save_path}')
 
