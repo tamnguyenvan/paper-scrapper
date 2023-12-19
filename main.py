@@ -54,12 +54,11 @@ def scrape_papers(driver, papers, start_index: int = 0):
 def scroll_down(driver):
     scroll_height = 15000
 
-    print('sh', scroll_height)
     driver.execute_script(f"window.scrollTo(0, {scroll_height});")
 
 
 def main():
-    url = 'https://eposters.ddw.org/ddw/#!*menu=16*browseby=8*sortby=2*ce_id=2482*ot_id=27743*trend=19514*marker=4154'
+    url = 'https://eposters.ddw.org/ddw/#!*menu=16*browseby=8*sortby=2*ce_id=2482*ot_id=27750*trend=19514*marker=4154'
     driver = webdriver.Chrome()
 
     driver.get(url)
@@ -84,20 +83,19 @@ def main():
             papers.update(papers_per_screen_view)
 
             scroll_down(driver)
-            time.sleep(5)
+            time.sleep(15)
         else:
             print('No paper found. Terminating...')
             break
 
     # Save scapped data
     save_path = 'papers.csv'
-    with open(save_path, 'w') as f:
-        writer = csv.writer(f, quotechar='"')
+    with open(save_path, 'w', encoding='utf-8') as f:
+        writer = csv.writer(f, quotechar='"', lineterminator='\n')
         for _, paper_info in papers.items():
             writer.writerow([paper_info['title'], paper_info['link'], paper_info['reference']])
 
     print(f'Saved results as {save_path}')
 
 
-if __name__ == '__main__':
-    main()
+main()
